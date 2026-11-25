@@ -1,0 +1,44 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-gate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pytest
+
+      - name: Conformance tests
+        run: python -m pytest -q
+
+      # ZP-11 dogfoods itself: the repository is gated by its own reference gate.
+      - name: ProofGate ZP-11 (self-gating)
+        run: |
+          python -m zp11.cli keygen --out ci.key
+          python -m zp11.cli run --key ci.key --out proof-pack.json
+          python -m zp11.cli verify proof-pack.json
+
+      - name: Upload Proof-Pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-pack-${{ matrix.python-version }}
+          path: proof-pack.json

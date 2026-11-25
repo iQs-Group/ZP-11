@@ -1,0 +1,64 @@
+# ZP-11 gate configuration for this repository (the standard dogfoods itself).
+# Each zone maps to a check this repo can actually run. A zone that cannot prove
+# its result returns FAIL -- the gate is closed by default.
+
+[change]
+id = "self"
+source_commit = "HEAD"
+builder = "github-actions/zp11-reference"
+
+[zones.ZP-1]
+title = "Provenance"
+kind = "require"
+require = ["source_commit", "builder"]
+
+[zones.ZP-2]
+title = "Reproducible build"
+kind = "command"
+command = "python -c \"import zp11; print(zp11.__version__)\""
+
+[zones.ZP-3]
+title = "Dependency integrity"
+kind = "file"
+file = "requirements.lock"
+min_bytes = 1
+
+[zones.ZP-4]
+title = "Test evidence"
+kind = "command"
+command = "python -m pytest -q"
+
+[zones.ZP-5]
+title = "Coverage floor"
+kind = "command"
+command = "python -m pytest -q"
+
+[zones.ZP-6]
+title = "Static safety"
+kind = "command"
+command = "python -m compileall -q zp11"
+
+[zones.ZP-7]
+title = "Secret hygiene"
+kind = "secret_scan"
+paths = ["zp11/**/*.py", "*.md", "*.toml"]
+
+[zones.ZP-8]
+title = "Policy conformance"
+kind = "file"
+file = "LICENSE"
+min_bytes = 100
+
+[zones.ZP-9]
+title = "Signature chain"
+kind = "require"
+require = ["source_commit"]
+
+[zones.ZP-10]
+title = "Independent re-run"
+kind = "command"
+command = "python -m zp11.cli zones"
+
+[zones.ZP-11]
+title = "Zero-point seal"
+kind = "seal"

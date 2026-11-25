@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# ZP-11 local artifacts
+*.key
+*.key.pub
+proof-pack.json
+proof-pack.*.json

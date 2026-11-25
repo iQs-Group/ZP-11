@@ -1,0 +1,5 @@
+# Pinned runtime dependencies for the ZP-11 reference implementation.
+# ZP-3 (Dependency integrity) reads this file; keep every dependency pinned.
+cryptography==44.0.0
+cffi==1.17.1
+pycparser==2.22

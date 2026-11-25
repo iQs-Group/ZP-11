@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zp11"
+version = "1.0.0"
+description = "ProofGate ZP-11 -- the Zero-Point release-governance standard and reference implementation. No evidence, no merge."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Naquib Hatami"}]
+maintainers = [{name = "Naquib Hatami"}]
+keywords = [
+  "release-governance", "supply-chain-security", "fail-closed", "ci-cd",
+  "provenance", "reproducible-builds", "ed25519", "attestation", "slsa",
+  "software-supply-chain", "proof-pack", "zero-point", "merge-gate",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = ["cryptography>=42,<47"]
+
+[project.urls]
+Homepage = "https://zp11.org"
+Repository = "https://github.com/iQs-Group/ZP-11"
+Specification = "https://github.com/iQs-Group/ZP-11/blob/main/SPEC.md"
+
+[project.scripts]
+zp11 = "zp11.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["zp11*"]
+
+[tool.setuptools.package-data]
+zp11 = ["schema/*.json"]
