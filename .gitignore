@@ -15,3 +15,6 @@ venv/
 *.key.pub
 proof-pack.json
 proof-pack.*.json
+
+# wrangler local cache
+.wrangler/
